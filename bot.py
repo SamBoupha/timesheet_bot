@@ -23,6 +23,11 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text="Syntax:\n/hisp,task name,time spent,status\n/ebrs,task name,time spent,status"
         )
 
+async def list(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
+    with open("Daily timesheet.xlsx", "rb") as f:
+        await context.bot.send_document(chat_id=update.effective_chat.id, document=f)
+
 async def hisp(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Open an existing Excel file
@@ -101,11 +106,13 @@ if __name__ == '__main__':
     hisp_handler = CommandHandler('hisp', hisp)
     ebrs_handler = CommandHandler('ebrs', ebrs)
     help_handler = CommandHandler('help', help)
+    list_handler = CommandHandler('list', list)
     # echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), spent)
     
     application.add_handler(start_handler)
     application.add_handler(hisp_handler)
     application.add_handler(ebrs_handler)
     application.add_handler(help_handler)
+    application.add_handler(list_handler)
     
     application.run_polling()
